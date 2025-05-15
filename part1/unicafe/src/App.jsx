@@ -7,6 +7,15 @@ const Button = (props) => {
 }
 
 const Statistics = (props) => {
+  const totalRating = props.good + props.neutral + props.bad;
+  const averageRating = () => {
+    let good = props.good;
+    let bad = props.bad;
+    let neutral = props.neutral;
+
+    const averageRating = (good*1+bad*-1)/totalRating;
+    return averageRating;
+  }
   return(
     <>
     <h1>
@@ -16,6 +25,9 @@ const Statistics = (props) => {
     <p>good: {props.good}</p>
     <p>netural: {props.neutral}</p>
     <p>bad: {props.bad}</p>
+    <p>all: {totalRating}</p>
+    <p>average: {averageRating()}</p>
+    <p>positive: {props.good/totalRating * 100}</p>
     </>
   );
 }
