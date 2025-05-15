@@ -7,37 +7,17 @@ const Button = (props) => {
 }
 
 const Statistics = (props) => {
-  const totalRating = props.good + props.neutral + props.bad;
-  const averageRating = () => {
-    let good = props.good;
-    let bad = props.bad;
-    let neutral = props.neutral;
-
-    const averageRating = (good*1+bad*-1)/totalRating;
-    return averageRating;
-  }
-
-  if(props.good === 0 && props.neutral === 0 && props.bad===0) {
+   if(props.value===0) {
     return(
       <>
-        <h1>Statistics</h1>
         <p>No feedback given</p>
       </>
     )
   }
-  
+
   return(
     <>
-    <h1>
-      Statistics
-    </h1>
-
-    <p>good: {props.good}</p>
-    <p>netural: {props.neutral}</p>
-    <p>bad: {props.bad}</p>
-    <p>all: {totalRating}</p>
-    <p>average: {averageRating()}</p>
-    <p>positive: {props.good/totalRating * 100}</p>
+    <p>{props.text}: {props.value}</p>
     </>
   );
 }
@@ -46,6 +26,8 @@ const App = () => {
   const [goodClick,setGoodClick] = useState(0);
   const [neutralClick, setNeutralClick] = useState(0);
   const [badClick, setBadClick] = useState(0);
+  const totalRating = goodClick+neutralClick+badClick;
+
 
   const goodBtn = () => {
     const storeGood = goodClick+1;
@@ -62,13 +44,23 @@ const App = () => {
     setBadClick(storeBad);
   }
 
+   const averageRating = () => (goodClick*1+badClick*-1)/totalRating;
+
   return(
     <>
       <h1>Give Feedback</h1>
       <Button onClick={goodBtn} text="good" />
       <Button onClick={neutralBtn} text="neutral" />
       <Button onClick={badBtn} text="bad" />
-      <Statistics good={goodClick} neutral={neutralClick} bad={badClick} />
+      {goodClick === 0 && neutralClick===0 && badClick===0 ? "No Feedback" : <>
+      <Statistics text={"good"} value={goodClick} />
+      <Statistics text={"neutral"} value={neutralClick} />
+      <Statistics text={"bad"} value={badClick} />
+      <Statistics text={"all"} value={totalRating} />
+      <Statistics text={"average"} value={averageRating()} />
+      <Statistics text={"positive"} value={goodClick/totalRating * 100} />
+      </>
+  }
     </>
   );
 }
