@@ -16,6 +16,16 @@ const Statistics = (props) => {
     const averageRating = (good*1+bad*-1)/totalRating;
     return averageRating;
   }
+
+  if(props.good === 0 && props.neutral === 0 && props.bad===0) {
+    return(
+      <>
+        <h1>Statistics</h1>
+        <p>No feedback given</p>
+      </>
+    )
+  }
+  
   return(
     <>
     <h1>
