@@ -7,17 +7,18 @@ const Button = (props) => {
 }
 
 const Statistics = (props) => {
-   if(props.value===0) {
-    return(
-      <>
-        <p>No feedback given</p>
-      </>
-    )
-  }
-
   return(
     <>
-    <p>{props.text}: {props.value}</p>
+    <table colSpan="2" border="2px">
+      <tbody>
+        <tr>
+        <td>
+          {props.text}: {props.value}
+        </td>
+        </tr>
+      </tbody>
+    </table>
+   
     </>
   );
 }
@@ -52,6 +53,7 @@ const App = () => {
       <Button onClick={goodBtn} text="good" />
       <Button onClick={neutralBtn} text="neutral" />
       <Button onClick={badBtn} text="bad" />
+      <br />
       {goodClick === 0 && neutralClick===0 && badClick===0 ? "No Feedback" : <>
       <Statistics text={"good"} value={goodClick} />
       <Statistics text={"neutral"} value={neutralClick} />
