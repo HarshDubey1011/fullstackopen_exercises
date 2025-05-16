@@ -4,6 +4,17 @@ const Button = (props) => {
     <button onClick={props.onClick}>{props.text}</button>
   );
 } 
+
+
+const MostVotedAncedotes = (props) => {
+  return (
+    <>
+      <h2>Ancedote with most votes</h2>
+      <p>{props.ancedote}</p>
+      <p>{`has ${props.votes} votes`}</p>
+    </>
+  );
+}
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -19,7 +30,8 @@ const App = () => {
    const [selected, setSelected] = useState(0)
    const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
 
-   console.log(votes);
+  const maxVote = Math.max(...votes);
+  const maxIndex = votes.indexOf(maxVote);
   const btnIncrement = () => {
     const randomNumber = Math.floor(Math.random() * anecdotes.length - 1) + 1;
     setSelected(randomNumber);
@@ -36,7 +48,7 @@ const App = () => {
      {`has ${votes[selected]} ${votes[selected] !== 1 ? "votes" : "vote"}`}<br />
       <Button onClick={voteIncrement} text="vote" />
       <Button onClick={btnIncrement} text="generate" />
-
+      <MostVotedAncedotes ancedote={anecdotes[maxIndex]} votes={maxVote} />
     </div>
   )
 }
