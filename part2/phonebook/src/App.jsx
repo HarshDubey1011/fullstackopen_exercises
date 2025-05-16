@@ -2,11 +2,15 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phoneNumber: 8989445859 }
-  ]) 
+    { name: 'Arto Hellas', phoneNumber: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', phoneNumber: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', phoneNumber: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', phoneNumber: '39-23-6423122', id: 4 }
+  ])
   
   const [newName, setNewName] = useState('');
-  const [newNumber, setNewNumber] = useState(0);
+  const [newNumber, setNewNumber] = useState("");
+  const [search, setSearch] = useState('');
 
   const handleInputChange = (event) => {
     setNewName(event.target.value);
@@ -14,6 +18,11 @@ const App = () => {
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value);
+  }
+
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+    
   }
 
   const addName = (event) => {
@@ -35,28 +44,32 @@ const App = () => {
     }
     setPersons(persons.concat(newObject));
     setNewName("");
+    setNewNumber("");
   }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with <input type='text' value={search} onChange={handleSearch} /> <br /><br />
       <form onSubmit={addName}>
         <div>
-          name: <input value={newName} onChange={handleInputChange} />
-          number: <input value={newNumber} onChange={handleNumberChange} />
+          name: <input value={newName} onChange={handleInputChange} /><br />
+          number: <input type='number' value={newNumber} onChange={handleNumberChange} />
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person,i)=>
-        <>
-          <p key={i}>{person.name.toLocaleUpperCase()}</p>
-          <p>{person.phoneNumber}</p>
-        </>
-      )}
+      {persons
+        .filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
+        .map(person => (
+          <div key={person.id}>
+            <p>{person.name.toUpperCase()}</p>
+            <p>{person.phoneNumber}</p>
+          </div>
+      ))}
     </div>
   )
 }
