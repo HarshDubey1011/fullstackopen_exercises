@@ -1,19 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Filter from './components/Filter';
 import Form from './components/Form';
 import Filter2 from './components/Filter2';
+import axios from 'axios';
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phoneNumber: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', phoneNumber: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', phoneNumber: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', phoneNumber: '39-23-6423122', id: 4 }
   ])
   
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    console.log("Effect");
+    axios.get('http://localhost:3001/persons').then(response=> {
+      console.log(response.data);
+      setPersons(response.data);
+    })
+  },[]);
+  console.log("There are ",persons.length,"persons");
 
   const handleInputChange = (event) => {
     setNewName(event.target.value);
