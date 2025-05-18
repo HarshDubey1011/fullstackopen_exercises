@@ -1,5 +1,7 @@
+import phoneBookService from "../services/phoneBookService";
+
 const Filter2 = (props) => {
-  console.log("props",props);
+  console.log(props.persons);
     return (
         <>
         {props.persons
@@ -8,6 +10,8 @@ const Filter2 = (props) => {
           <div key={person.id}>
             <p>{person.name.toUpperCase()}</p>
             <p>{person.number}</p>
+            {person.id}
+            <button onClick={()=>props.onDelete(person.id)}>delete</button>
           </div>
       ))}
         </>

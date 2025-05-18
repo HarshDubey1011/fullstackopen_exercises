@@ -7,4 +7,11 @@ const addPhoneBook = (phoneObject) => {
     return request.then(response=>response.data);
 } 
 
-export default {addPhoneBook};
+const deletePhoneBook = (id) => {
+    console.log("id",id);
+    const request = axios.delete(`${url}/${id}`);
+    console.log(request);
+    return request.then(response=>response.data);
+}
+
+export default {addPhoneBook,deletePhoneBook};

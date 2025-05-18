@@ -55,14 +55,17 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    console.log("i was here");
-    phoneBookService.addPhoneBook(newObject).then(returnedPhoneBook => {
-      console.log("returnedPhoneBook",returnedPhoneBook)
-      setPersons(persons.concat(newObject));
-      console.log(persons);
-      setNewName("");
-      setNewNumber("");
-    })
+    
+phoneBookService.addPhoneBook(newObject).then(returnedPhoneBook => {
+  console.log("returnedPhoneBook", returnedPhoneBook);
+
+  // Add the actual object returned from server with ID
+  setPersons(prev => [...prev, returnedPhoneBook]);
+
+  setNewName("");
+  setNewNumber("");
+});
+
 
     // setPersons(persons.concat(newObject));
     // setNewName("");
@@ -70,15 +73,27 @@ const App = () => {
   }
   }
 
+   const handleDelete = (id) => {
+    const result = window.confirm("Are you sure wanna delete");
+    if(result) {
+    phoneBookService.deletePhoneBook(id).then(data=> {
+      console.log(data);
+      const updatedPersons = persons.filter(person=>person.id!=id);
+      setPersons(updatedPersons);
+    }).catch(error=> {
+      console.log(error);
+    })
+  }
+  }
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter search={search} handleSearch={handleSearch} />
       <Form addName={addName} newName={newName} handleInputChange={handleInputChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Filter2 persons={persons} search={search} />
+      <Filter2 persons={persons} search={search} onDelete={handleDelete} />
     </div>
   )
 }
 
-export default App
+export default App;
