@@ -1,4 +1,5 @@
 const Filter2 = (props) => {
+  console.log("props",props);
     return (
         <>
         {props.persons
@@ -6,7 +7,7 @@ const Filter2 = (props) => {
         .map(person => (
           <div key={person.id}>
             <p>{person.name.toUpperCase()}</p>
-            <p>{person.phoneNumber}</p>
+            <p>{person.number}</p>
           </div>
       ))}
         </>

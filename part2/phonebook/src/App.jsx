@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios';
+import phoneBookService from './services/phoneBookService';
 import Filter from './components/Filter';
 import Form from './components/Form';
 import Filter2 from './components/Filter2';
-import axios from 'axios';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -20,6 +21,9 @@ const App = () => {
     })
   },[]);
   console.log("There are ",persons.length,"persons");
+
+  
+
 
   const handleInputChange = (event) => {
     setNewName(event.target.value);
@@ -49,11 +53,20 @@ const App = () => {
     else {
     const newObject = {
       name: newName,
-      phoneNumber: newNumber
+      number: newNumber
     }
-    setPersons(persons.concat(newObject));
-    setNewName("");
-    setNewNumber("");
+    console.log("i was here");
+    phoneBookService.addPhoneBook(newObject).then(returnedPhoneBook => {
+      console.log("returnedPhoneBook",returnedPhoneBook)
+      setPersons(persons.concat(newObject));
+      console.log(persons);
+      setNewName("");
+      setNewNumber("");
+    })
+
+    // setPersons(persons.concat(newObject));
+    // setNewName("");
+    // setNewNumber("");
   }
   }
 
