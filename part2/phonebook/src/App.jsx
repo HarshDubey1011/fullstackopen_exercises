@@ -22,9 +22,6 @@ const App = () => {
   },[]);
   console.log("There are ",persons.length,"persons");
 
-  
-
-
   const handleInputChange = (event) => {
     setNewName(event.target.value);
   }
@@ -43,20 +40,28 @@ const App = () => {
     
     const exists = persons.some(obj=> obj.name===newName);
     const numberExists = persons.some(obj=> obj.phoneNumber==newNumber);
-    console.log(exists);
-    console.log(numberExists);
-    if(exists) {
-      alert(`${newName} is already added to the phonebook`);
-    }else if(numberExists) {
-      alert(`${newNumber} is already present in the phone book`)
-    }
-    else {
     const newObject = {
       name: newName,
       number: newNumber
     }
-    
-phoneBookService.addPhoneBook(newObject).then(returnedPhoneBook => {
+    console.log("exists",exists);
+   
+    if(exists) {
+      const existingPerson = persons.find(p=>p.name=== newName);
+      const updateConfirm = window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`);
+      if(updateConfirm) {
+        phoneBookService.updatePhoneBook(existingPerson.id,newObject).then(updatedPhoneBook=> {
+          console.log("updatedPhoneBook",updatedPhoneBook);
+          setPersons(persons.map(p => 
+          p.id !== existingPerson.id ? p : updatedPhoneBook
+        ));
+            setNewName("");
+            setNewNumber("");
+        })
+      }
+    }
+    else {
+  phoneBookService.addPhoneBook(newObject).then(returnedPhoneBook => {
   console.log("returnedPhoneBook", returnedPhoneBook);
 
   // Add the actual object returned from server with ID
