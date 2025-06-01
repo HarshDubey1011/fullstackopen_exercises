@@ -40,7 +40,9 @@ app.get("/info", (req, res) => {
 app.get("/api/persons/:id", (req, res) => {
   const id = req.params.id;
   const person = persons.find((person) => person.id == id);
-  console.log(person);
+  if (person === undefined) {
+    return res.status(404).json({ error: "Not Found!" });
+  }
   res.status(201).json(person);
 });
 
