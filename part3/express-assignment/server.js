@@ -1,8 +1,20 @@
 const express = require("express");
+const morgan = require("morgan");
 
 const app = express();
 
 app.use(express.json());
+app.use(morgan("tiny"));
+
+const requestLogger = (req, res, next) => {
+  console.log("Method: ", req.method);
+  console.log("Path: ", req.path);
+  console.log("Body: ", req.body);
+  console.log("Headers: ", req.headers);
+  next();
+};
+
+app.use(requestLogger);
 
 let persons = [
   {
@@ -84,6 +96,12 @@ app.post("/api/persons", (req, res) => {
   persons = persons.concat(newPerson);
   res.status(200).json("Successfully added the person");
 });
+
+const unknownEndPoint = (req, res) => {
+  res.status(404).json({ error: "Unknowkn Endpoint" });
+};
+
+app.use(unknownEndPoint);
 
 const port = 3000;
 app.listen(port, (req, res) =>
