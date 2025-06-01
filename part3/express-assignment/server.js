@@ -66,8 +66,13 @@ const generatePersonId = () => {
 
 app.post("/api/persons", (req, res) => {
   const person = req.body;
-  if (!person.name) {
-    return res.status(404).json({ message: "Content not found " });
+  const isName = persons.find((per) => per.name === person.name);
+  if (!person.name || !person.number) {
+    return res.status(404).json({ message: "name or number not found " });
+  }
+
+  if (isName) {
+    return res.status(409).json({ error: "Name must be unique" });
   }
 
   const newPerson = {
