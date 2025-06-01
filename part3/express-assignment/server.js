@@ -58,6 +58,28 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(201).json({ message: "Person successfully deleted!" });
 });
 
+const generatePersonId = () => {
+  const id =
+    Math.floor(Math.random() * (10000 - persons.length + 1)) + persons.length;
+  return id;
+};
+
+app.post("/api/persons", (req, res) => {
+  const person = req.body;
+  if (!person.name) {
+    return res.status(404).json({ message: "Content not found " });
+  }
+
+  const newPerson = {
+    id: generatePersonId(),
+    name: person.name,
+    number: person.number,
+  };
+
+  persons = persons.concat(newPerson);
+  res.status(200).json("Successfully added the person");
+});
+
 const port = 3000;
 app.listen(port, (req, res) =>
   console.log(`Server is listening on port ${port}`)
